@@ -96,3 +96,8 @@ add-migration InitialApplicatinDb -context ApplicationDbContext
 update-database -context ApplicationDbContext
 ```
 
+## 二、常量
+
+- 定义权限动作常量：增删改查。
+- 定义权限特性常量：多租户、用户、角色。
+- 定义权限列表常量：所有权限、管理员权限、普通权限。
