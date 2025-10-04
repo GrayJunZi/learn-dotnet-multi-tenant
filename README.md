@@ -112,3 +112,9 @@ update-database -context ApplicationDbContext
 
 - 定义常见异常类。
 - 定义API响应包装类。
+
+## 五、权限基础之鉴权
+
+- 定义权限数据类
+- 定义权限提供器类。
+- 定义鉴权处理类。

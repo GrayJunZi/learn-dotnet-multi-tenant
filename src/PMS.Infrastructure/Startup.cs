@@ -1,10 +1,12 @@
 ﻿using Finbuckle.MultiTenant;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PMS.Infrastructure.Contexts;
+using PMS.Infrastructure.Identity.Auth;
 using PMS.Infrastructure.Identity.Models;
 using PMS.Infrastructure.Tenancy;
 
@@ -26,7 +28,8 @@ public static class Startup
                 options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")))
             .AddTransient<ITenantDbSeeder, TenantDbSeeder>()
             .AddTransient<ApplicationDbSeeder>()
-            .AddIdentityService();
+            .AddIdentityService()
+            .AddPermissions();
     }
 
     public static async Task AddDatabaseInitializerAsync(this IServiceProvider serviceProvider, CancellationToken cancellationToken = default)
@@ -52,6 +55,13 @@ public static class Startup
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders()
             .Services;
+    }
+
+    internal static IServiceCollection AddPermissions(this IServiceCollection services)
+    {
+        return services
+            .AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>()
+            .AddScoped<IAuthorizationHandler,PermissionAuthorizationHandler>();
     }
 
     public static IApplicationBuilder UseInfrastructure(this IApplicationBuilder app)
