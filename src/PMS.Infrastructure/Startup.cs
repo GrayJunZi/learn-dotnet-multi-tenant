@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using PMS.Application;
 using PMS.Application.Features.Identity.Tokens;
 using PMS.Application.Wrappers;
@@ -16,6 +17,7 @@ using PMS.Infrastructure.Contexts;
 using PMS.Infrastructure.Identity.Auth;
 using PMS.Infrastructure.Identity.Models;
 using PMS.Infrastructure.Identity.Tookens;
+using PMS.Infrastructure.OpenApi;
 using PMS.Infrastructure.Tenancy;
 using System.Net;
 using System.Security.Claims;
@@ -40,7 +42,8 @@ public static class Startup
             .AddTransient<ITenantDbSeeder, TenantDbSeeder>()
             .AddTransient<ApplicationDbSeeder>()
             .AddIdentityService()
-            .AddPermissions();
+            .AddPermissions()
+            .AddOpenApiDocumentation(configuration);
     }
 
     public static async Task AddDatabaseInitializerAsync(this IServiceProvider serviceProvider, CancellationToken cancellationToken = default)
@@ -167,9 +170,59 @@ public static class Startup
         return services;
     }
 
+    internal static IServiceCollection AddOpenApiDocumentation(this IServiceCollection services, IConfiguration configuration)
+    {
+        var scalarSettings = configuration.GetSection(nameof(ScalarSettings))
+            .Get<ScalarSettings>();
+
+        services.AddEndpointsApiExplorer();
+        services.AddOpenApi(options =>
+        {
+            options.AddDocumentTransformer((document, context, cancellationToken) =>
+            {
+                document.Info = new()
+                {
+                    Title = scalarSettings.Title,
+                    Description = scalarSettings.Description,
+                    Version = scalarSettings.Version,
+                    Contact = new()
+                    {
+                        Name = scalarSettings.ContactName,
+                        Email = scalarSettings.ContactEmail,
+                    },
+                    License = new()
+                    {
+                        Name = scalarSettings.LicenseName,
+                        Url = scalarSettings.LicenseUrl?.Length > 0 ? new Uri(scalarSettings.LicenseUrl) : null,
+                    },
+                };
+
+                document.Components ??= new();
+                document.Components.SecuritySchemes = new Dictionary<string, OpenApiSecurityScheme>
+                {
+                    [JwtBearerDefaults.AuthenticationScheme] = new()
+                    {
+                        Name = "Authorization",
+                        Description = "Enter your Bearer token to attach it as a header on your requests.",
+                        In = ParameterLocation.Header,
+                        Type = SecuritySchemeType.Http,
+                        Scheme = JwtBearerDefaults.AuthenticationScheme,
+                        BearerFormat = "JWT",
+                    }
+                };
+
+                return Task.CompletedTask;
+            });
+        });
+
+        return services;
+    }
+
     public static IApplicationBuilder UseInfrastructure(this IApplicationBuilder app)
     {
         return app
+            .UseAuthentication()
+            .UseAuthorization()
             .UseMultiTenant();
     }
 }

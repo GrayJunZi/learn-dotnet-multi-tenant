@@ -122,10 +122,15 @@ update-database -context ApplicationDbContext
 ## 六、JWT生成之认证
 
 - 定义Token生成类。
-- 注入身份认证与鉴权。
+- 注册身份认证与鉴权。
 
 在 `Infrastructure` 类库中安装 `Jwt` 生成组件。
 
 ```bash
 dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer
 ```
+
+## 七、OpenAPI配置
+
+- 定义Scalar配置类。
+- 注册Scalar到容器中。
