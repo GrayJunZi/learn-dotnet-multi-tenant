@@ -118,3 +118,14 @@ update-database -context ApplicationDbContext
 - 定义权限数据类
 - 定义权限提供器类。
 - 定义鉴权处理类。
+
+## 六、JWT生成之认证
+
+- 定义Token生成类。
+- 注入身份认证与鉴权。
+
+在 `Infrastructure` 类库中安装 `Jwt` 生成组件。
+
+```bash
+dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer
+```

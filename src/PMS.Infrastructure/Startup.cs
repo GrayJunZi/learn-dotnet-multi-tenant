@@ -1,14 +1,25 @@
 ﻿using Finbuckle.MultiTenant;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using PMS.Application;
+using PMS.Application.Features.Identity.Tokens;
+using PMS.Application.Wrappers;
+using PMS.Infrastructure.Constants;
 using PMS.Infrastructure.Contexts;
 using PMS.Infrastructure.Identity.Auth;
 using PMS.Infrastructure.Identity.Models;
+using PMS.Infrastructure.Identity.Tookens;
 using PMS.Infrastructure.Tenancy;
+using System.Net;
+using System.Security.Claims;
+using System.Text;
 
 namespace PMS.Infrastructure;
 
@@ -54,14 +65,106 @@ public static class Startup
             })
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders()
-            .Services;
+            .Services
+            .AddScoped<ITokenService, TokenService>();
     }
 
     internal static IServiceCollection AddPermissions(this IServiceCollection services)
     {
         return services
             .AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>()
-            .AddScoped<IAuthorizationHandler,PermissionAuthorizationHandler>();
+            .AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
+    }
+
+    public static JwtSettings GetJwtSettings(this IServiceCollection services, IConfiguration configuration)
+    {
+        var jwtSettinsConfiguration = configuration.GetSection(nameof(JwtSettings));
+        services.Configure<JwtSettings>(jwtSettinsConfiguration);
+
+        return jwtSettinsConfiguration.Get<JwtSettings>();
+    }
+
+    public static IServiceCollection AddJwtAuthentication(this IServiceCollection services, JwtSettings jwtSettings)
+    {
+        var secret = Encoding.UTF8.GetBytes(jwtSettings.Secret);
+
+        services
+            .AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(bearer =>
+            {
+                bearer.RequireHttpsMetadata = false;
+                bearer.SaveToken = true;
+                bearer.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ClockSkew = TimeSpan.Zero,
+                    RoleClaimType = ClaimTypes.Role,
+                    ValidateLifetime = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret)),
+                };
+
+                bearer.Events = new JwtBearerEvents
+                {
+                    OnAuthenticationFailed = context =>
+                    {
+                        if (context.Exception is SecurityTokenExpiredException)
+                        {
+                            context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                            context.Response.ContentType = "application/json";
+
+                            return context.Response.WriteAsJsonAsync(ResponseWrapper.Fail("Token 已过期。"));
+                        }
+                        else
+                        {
+                            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                            context.Response.ContentType = "application/json";
+                            return context.Response.WriteAsJsonAsync(ResponseWrapper.Fail("发生内部错误。"));
+                        }
+                    },
+                    OnChallenge = context =>
+                    {
+                        context.HandleResponse();
+                        if (!context.Response.HasStarted)
+                        {
+                            context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                            context.Response.ContentType = "application/json";
+
+                            return context.Response.WriteAsJsonAsync(ResponseWrapper.Fail("无权限。"));
+                        }
+
+                        return Task.CompletedTask;
+                    },
+                    OnForbidden = context =>
+                    {
+                        context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                        context.Response.ContentType = "application/json";
+
+                        return context.Response.WriteAsJsonAsync(ResponseWrapper.Fail("无权限访问该资源。"));
+                    },
+                };
+            });
+
+        services.AddAuthorization(options =>
+        {
+            foreach (var property in typeof(CompanyPermissions).GetNestedTypes()
+                .SelectMany(x => x.GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.FlattenHierarchy)))
+            {
+                var propertyValue = property.GetValue(null);
+                if (propertyValue is not null)
+                {
+                    options.AddPolicy(propertyValue.ToString(), policy => policy
+                        .RequireClaim(ClaimConstants.Permission, propertyValue.ToString()));
+                }
+            }
+        });
+
+        return services;
     }
 
     public static IApplicationBuilder UseInfrastructure(this IApplicationBuilder app)
