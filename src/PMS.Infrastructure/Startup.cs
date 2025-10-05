@@ -116,11 +116,15 @@ public static class Startup
                 {
                     OnAuthenticationFailed = context =>
                     {
+                        if (context.Response.HasStarted)
+                        {
+                            return Task.CompletedTask;
+                        }
+
                         if (context.Exception is SecurityTokenExpiredException)
                         {
                             context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                             context.Response.ContentType = "application/json";
-
                             return context.Response.WriteAsJsonAsync(ResponseWrapper.Fail("Token 已过期。"));
                         }
                         else

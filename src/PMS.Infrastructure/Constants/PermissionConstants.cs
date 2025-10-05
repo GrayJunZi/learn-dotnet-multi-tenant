@@ -27,6 +27,10 @@ public static class ActionConstants
     /// 升级订阅权限
     /// </summary>
     public const string UpgradeSubscription = nameof(UpgradeSubscription);
+    /// <summary>
+    /// Refresh Token
+    /// </summary>
+    public const string RefreshToken = nameof(RefreshToken);
 }
 
 /// <summary>
@@ -40,6 +44,8 @@ public static class FeatureConstants
     public const string UserRoles = nameof(UserRoles);
     public const string RoleClaims = nameof(RoleClaims);
     public const string Companies = nameof(Companies);
+
+    public const string Tokens = nameof(Tokens);
 }
 
 /// <summary>
@@ -86,6 +92,8 @@ public static class CompanyPermissions
         new CompanyPermission(ActionConstants.Read, FeatureConstants.Companies, "读取公司", "Enterprise", IsBasic: true),
         new CompanyPermission(ActionConstants.Update, FeatureConstants.Companies, "修改公司", "Enterprise"),
         new CompanyPermission(ActionConstants.Delete, FeatureConstants.Companies , "删除公司", "Enterprise"),
+
+        new CompanyPermission(ActionConstants.RefreshToken,FeatureConstants.Tokens,"生成 Refresh Token", "SystemAccess", IsBasic: true),
     ];
 
     public static IReadOnlyList<CompanyPermission> All { get; }

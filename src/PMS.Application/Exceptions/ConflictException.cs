@@ -2,11 +2,14 @@
 
 namespace PMS.Application.Exceptions;
 
-public class ConflictException(
-    List<string> ErrorMessages = default,
-    HttpStatusCode StatusCode = HttpStatusCode.Conflict
-    ) : Exception
+public class ConflictException : Exception
 {
-
+    public List<string> ErrorMessages { get; set; }
+    public HttpStatusCode StatusCode { get; set; }
+    public ConflictException(List<string> errorMessages = default, HttpStatusCode statusCode = HttpStatusCode.Conflict)
+    {
+        ErrorMessages = errorMessages;
+        StatusCode = statusCode;
+    }
 }
 

@@ -173,9 +173,12 @@ public class ResponseWrapper<T> : ResponseWrapper, IResponseWrapper<T>
     public new static Task<ResponseWrapper<T>> SuccessAsync(List<string> messages)
         => Task.FromResult(Success(messages));
 
+    public static Task<ResponseWrapper<T>> SuccessAsync(T data)
+        => Task.FromResult(Success(data));
+
     public static Task<ResponseWrapper<T>> SuccessAsync(T data, string message)
         => Task.FromResult(Success(data, message));
 
     public static Task<ResponseWrapper<T>> SuccessAsync(T data, List<string> messages)
-        => Task.FromResult(Success(data, messages)); 
+        => Task.FromResult(Success(data, messages));
 }

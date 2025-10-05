@@ -134,3 +134,14 @@ dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer
 
 - 定义Scalar配置类。
 - 注册Scalar到容器中。
+
+## 八、CQRS和身份认证端点
+
+### 在应用层安装类库
+
+```bash
+dotnet add package MediatR
+dotnet add package Mapster
+dotnet add package FluentValidation
+dotnet add package FluentValidation.DependencyInjectionExtensions
+```

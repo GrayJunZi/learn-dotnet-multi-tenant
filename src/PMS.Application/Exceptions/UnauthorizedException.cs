@@ -2,10 +2,13 @@
 
 namespace PMS.Application.Exceptions;
 
-public class UnauthorizedException(
-    List<string> ErrorMessages = default,
-    HttpStatusCode StatusCode = HttpStatusCode.Unauthorized
-    ) : Exception
+public class UnauthorizedException : Exception
 {
-
+    public List<string> ErrorMessages { get; set; }
+    public HttpStatusCode StatusCode { get; set; }
+    public UnauthorizedException(List<string> errorMessages = default, HttpStatusCode statusCode = HttpStatusCode.Unauthorized)
+    {
+        ErrorMessages = errorMessages;
+        StatusCode = statusCode;
+    }
 }
