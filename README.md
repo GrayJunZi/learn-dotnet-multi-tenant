@@ -149,3 +149,9 @@ dotnet add package FluentValidation.DependencyInjectionExtensions
 ## 九、租户管理
 
 - 实现租户服务。
+
+## 十、公司实体管理
+
+- 定义公司服务接口与实现。
+- 定义公司服务的CQRS。
+- 定义公司接口。
