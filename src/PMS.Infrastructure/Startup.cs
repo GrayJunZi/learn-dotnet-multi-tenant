@@ -11,6 +11,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using PMS.Application;
 using PMS.Application.Features.Identity.Tokens;
+using PMS.Application.Features.Tenancy;
 using PMS.Application.Wrappers;
 using PMS.Infrastructure.Constants;
 using PMS.Infrastructure.Contexts;
@@ -41,6 +42,7 @@ public static class Startup
                 options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")))
             .AddTransient<ITenantDbSeeder, TenantDbSeeder>()
             .AddTransient<ApplicationDbSeeder>()
+            .AddTransient<ITenantService, TenantService >()
             .AddIdentityService()
             .AddPermissions()
             .AddOpenApiDocumentation(configuration);

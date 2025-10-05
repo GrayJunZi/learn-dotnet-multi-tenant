@@ -97,7 +97,7 @@ public class ApplicationDbSeeder(
         {
             incomingUser = new ApplicationUser
             {
-                Name = TenancyConstants.Name,
+                Name = multiTenantContextAccessor.MultiTenantContext.TenantInfo.Name,
                 Email = email,
                 UserName = email,
                 EmailConfirmed = true,

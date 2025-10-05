@@ -145,3 +145,7 @@ dotnet add package Mapster
 dotnet add package FluentValidation
 dotnet add package FluentValidation.DependencyInjectionExtensions
 ```
+
+## 九、租户管理
+
+- 实现租户服务。
