@@ -155,3 +155,7 @@ dotnet add package FluentValidation.DependencyInjectionExtensions
 - 定义公司服务接口与实现。
 - 定义公司服务的CQRS。
 - 定义公司接口。
+
+## 十一、MediatR管道行为
+
+- 定义 MediatR Pipeline Behavior 用于处理验证。

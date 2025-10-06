@@ -1,11 +1,12 @@
 ﻿using Mapster;
 using MediatR;
+using PMS.Application.Pipelines;
 using PMS.Application.Wrappers;
 using PMS.Domain.Entities;
 
 namespace PMS.Application.Features.Companies.Commands;
 
-public class CreateCompanyCommand : IRequest<IResponseWrapper>
+public class CreateCompanyCommand : IRequest<IResponseWrapper>, IValidateSelf
 {
     public CreateCompanyRequest CreateCompany { get; set; }
 }

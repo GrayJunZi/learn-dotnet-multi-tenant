@@ -1,9 +1,10 @@
 ﻿using MediatR;
+using PMS.Application.Pipelines;
 using PMS.Application.Wrappers;
 
 namespace PMS.Application.Features.Companies.Commands;
 
-public class UpdateCompanyCommand : IRequest<IResponseWrapper>
+public class UpdateCompanyCommand : IRequest<IResponseWrapper>, IValidateSelf
 {
     public UpdateCompanyRequest UpdateCompany { get; set; }
 }
