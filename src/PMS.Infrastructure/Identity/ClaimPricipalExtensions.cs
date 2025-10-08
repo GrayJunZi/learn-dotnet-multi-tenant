@@ -3,7 +3,7 @@ using System.Security.Claims;
 
 namespace PMS.Infrastructure.Identity;
 
-public static class ClaimsPricipalExtensions
+public static class ClaimsPrincipalExtensions
 {
     public static string GetEmail(this ClaimsPrincipal claimsPrincipal)
         => claimsPrincipal.FindFirstValue(ClaimTypes.Email);

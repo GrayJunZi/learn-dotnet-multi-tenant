@@ -159,3 +159,8 @@ dotnet add package FluentValidation.DependencyInjectionExtensions
 ## 十一、MediatR管道行为
 
 - 定义 MediatR Pipeline Behavior 用于处理验证。
+
+## 十二、身份认证子系统
+
+- 实现角色服务。
+- 实现用户服务。

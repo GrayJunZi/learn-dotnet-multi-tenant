@@ -6,7 +6,6 @@ namespace PMS.WebApi;
 
 public class ErrorHandlingMiddleware(RequestDelegate next)
 {
-
     public async Task InvokeAsync(HttpContext context)
     {
         try
@@ -44,7 +43,7 @@ public class ErrorHandlingMiddleware(RequestDelegate next)
                     break;
                 default:
                     response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                    responseWrapper.Messages = ["发生错误，请联系管理员。"];
+                    responseWrapper.Messages = [ex.Message];
                     break;
             }
 

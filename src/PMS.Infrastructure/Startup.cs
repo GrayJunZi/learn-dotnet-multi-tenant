@@ -11,15 +11,20 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using PMS.Application;
 using PMS.Application.Features.Companies;
+using PMS.Application.Features.Identity.Roles;
 using PMS.Application.Features.Identity.Tokens;
+using PMS.Application.Features.Identity.Users;
 using PMS.Application.Features.Tenancy;
 using PMS.Application.Wrappers;
 using PMS.Infrastructure.Companies;
 using PMS.Infrastructure.Constants;
 using PMS.Infrastructure.Contexts;
+using PMS.Infrastructure.Identity;
 using PMS.Infrastructure.Identity.Auth;
 using PMS.Infrastructure.Identity.Models;
+using PMS.Infrastructure.Identity.Roles;
 using PMS.Infrastructure.Identity.Tookens;
+using PMS.Infrastructure.Identity.Users;
 using PMS.Infrastructure.OpenApi;
 using PMS.Infrastructure.Tenancy;
 using System.Net;
@@ -74,7 +79,11 @@ public static class Startup
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders()
             .Services
-            .AddScoped<ITokenService, TokenService>();
+            .AddScoped<ITokenService, TokenService>()
+            .AddScoped<IRoleService, RoleService>()
+            .AddScoped<IUserService, UserService>()
+            .AddScoped<ICurrentUserService, CurrentUserService>()
+            .AddScoped<CurrentUserMiddleware>();
     }
 
     internal static IServiceCollection AddPermissions(this IServiceCollection services)
@@ -232,6 +241,7 @@ public static class Startup
         return app
             .UseAuthentication()
             .UseAuthorization()
+            .UseMiddleware<CurrentUserMiddleware>()
             .UseMultiTenant();
     }
 }
