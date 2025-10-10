@@ -1,6 +1,6 @@
 ﻿using Mapster;
 using MediatR;
-using PMS.Application.Wrappers;
+using PMS.Core.Wrappers;
 
 namespace PMS.Application.Features.Companies.Queries;
 

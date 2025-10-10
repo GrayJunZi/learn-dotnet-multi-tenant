@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using PMS.Application.Pipelines;
-using PMS.Application.Wrappers;
+using PMS.Core.Wrappers;
 
 namespace PMS.Application.Features.Companies.Commands;
 

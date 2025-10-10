@@ -1,5 +1,5 @@
 ﻿using PMS.Application.Exceptions;
-using PMS.Application.Wrappers;
+using PMS.Core.Wrappers;
 using System.Net;
 
 namespace PMS.WebApi;

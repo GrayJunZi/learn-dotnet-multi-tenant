@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using PMS.Application.Exceptions;
 using PMS.Application.Features.Identity.Roles;
-using PMS.Infrastructure.Constants;
+using PMS.Core.Constants;
 using PMS.Infrastructure.Contexts;
 using PMS.Infrastructure.Identity.Models;
 using PMS.Infrastructure.Tenancy;

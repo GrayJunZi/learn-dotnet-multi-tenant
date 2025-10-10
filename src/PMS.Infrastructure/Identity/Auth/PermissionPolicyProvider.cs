@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
-using PMS.Infrastructure.Constants;
+using PMS.Core.Constants;
 
 namespace PMS.Infrastructure.Identity.Auth;
 

@@ -1,4 +1,4 @@
-﻿namespace PMS.Application.Wrappers;
+﻿namespace PMS.Core.Wrappers;
 
 public interface IResponseWrapper
 {

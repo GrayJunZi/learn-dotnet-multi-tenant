@@ -1,7 +1,7 @@
 ﻿using Finbuckle.MultiTenant.Abstractions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using PMS.Infrastructure.Constants;
+using PMS.Core.Constants;
 using PMS.Infrastructure.Identity.Models;
 using PMS.Infrastructure.Tenancy;
 

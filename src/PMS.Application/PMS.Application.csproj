@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\PMS.Core\PMS.Core.csproj" />
     <ProjectReference Include="..\PMS.Domain\PMS.Domain.csproj" />
   </ItemGroup>
 

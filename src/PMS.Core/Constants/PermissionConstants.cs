@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 
-namespace PMS.Infrastructure.Constants;
+namespace PMS.Core.Constants;
 
 /// <summary>
 /// 权限动作常量

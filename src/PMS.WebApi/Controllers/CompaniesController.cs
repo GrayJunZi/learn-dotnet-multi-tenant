@@ -2,7 +2,7 @@
 using PMS.Application.Features.Companies;
 using PMS.Application.Features.Companies.Commands;
 using PMS.Application.Features.Companies.Queries;
-using PMS.Infrastructure.Constants;
+using PMS.Core.Constants;
 using PMS.Infrastructure.Identity.Auth;
 
 namespace PMS.WebApi.Controllers;

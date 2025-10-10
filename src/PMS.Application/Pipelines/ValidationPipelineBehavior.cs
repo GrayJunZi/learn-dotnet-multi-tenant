@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using MediatR;
-using PMS.Application.Wrappers;
+using PMS.Core.Wrappers;
 
 namespace PMS.Application.Pipelines;
 

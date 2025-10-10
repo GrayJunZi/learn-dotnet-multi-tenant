@@ -164,3 +164,32 @@ dotnet add package FluentValidation.DependencyInjectionExtensions
 
 - 实现角色服务。
 - 实现用户服务。
+
+## 十三、Blazor WebAssembly
+
+创建 `Blazor WebAssembly` 项目。
+
+```bash
+dotnet new blazorwasm -n PMS.WebApp
+```
+
+安装 [MudBlazor](https://mudblazor.com) 主题。
+
+```bash
+dotnet add package MudBlazor
+```
+
+安装 Blazor 存储组件。
+
+```bash
+dotnet add package Blazored.LocalStorage
+```
+
+安装其他组件。
+
+```bash
+dotnet add package Microsoft.AspNetCore.Components.Authorization
+dotnet add package Microsoft.AspNetCore.Components.WebAssembly
+dotnet add package Microsoft.Extensions.Http
+dotnet add package Toolbelt.Blazor.HttpClientInterceptor
+```

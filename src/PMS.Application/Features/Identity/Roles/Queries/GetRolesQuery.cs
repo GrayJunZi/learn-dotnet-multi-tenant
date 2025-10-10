@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using PMS.Application.Wrappers;
+using PMS.Core.Wrappers;
 
 namespace PMS.Application.Features.Identity.Roles.Queries;
 

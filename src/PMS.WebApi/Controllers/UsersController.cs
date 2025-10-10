@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using PMS.Application.Features.Identity.Users;
 using PMS.Application.Features.Identity.Users.Commands;
 using PMS.Application.Features.Identity.Users.Queries;
-using PMS.Infrastructure.Constants;
+using PMS.Core.Constants;
 using PMS.Infrastructure.Identity.Auth;
 
 namespace PMS.WebApi.Controllers;

@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using PMS.Application.Wrappers;
+using PMS.Core.Wrappers;
 using System.Diagnostics.CodeAnalysis;
 
 namespace PMS.Application.Features.Identity.Tokens.Queries;

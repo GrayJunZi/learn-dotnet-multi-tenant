@@ -1,5 +1,4 @@
-﻿
-namespace PMS.Application.Wrappers;
+﻿namespace PMS.Core.Wrappers;
 
 public class ResponseWrapper : IResponseWrapper
 {

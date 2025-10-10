@@ -1,4 +1,4 @@
-﻿namespace PMS.Infrastructure.Constants;
+﻿namespace PMS.Core.Constants;
 
 public static class ClaimConstants
 {

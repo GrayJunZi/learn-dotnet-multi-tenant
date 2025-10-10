@@ -5,7 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using PMS.Application;
 using PMS.Application.Exceptions;
 using PMS.Application.Features.Identity.Tokens;
-using PMS.Infrastructure.Constants;
+using PMS.Core.Constants;
 using PMS.Infrastructure.Identity.Models;
 using PMS.Infrastructure.Tenancy;
 using System.IdentityModel.Tokens.Jwt;

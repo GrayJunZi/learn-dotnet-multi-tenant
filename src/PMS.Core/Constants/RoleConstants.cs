@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 
-namespace PMS.Infrastructure.Constants;
+namespace PMS.Core.Constants;
 
 /// <summary>
 /// 角色常量

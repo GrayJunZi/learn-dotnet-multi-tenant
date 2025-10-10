@@ -1,4 +1,4 @@
-﻿using PMS.Infrastructure.Constants;
+﻿using PMS.Core.Constants;
 using System.Security.Claims;
 
 namespace PMS.Infrastructure.Identity;

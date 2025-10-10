@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PMS.Application.Features.Identity.Tokens;
 using PMS.Application.Features.Identity.Tokens.Queries;
-using PMS.Infrastructure.Constants;
+using PMS.Core.Constants;
 using PMS.Infrastructure.Identity.Auth;
 using PMS.Infrastructure.OpenApi;
 
