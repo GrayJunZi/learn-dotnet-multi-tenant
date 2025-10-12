@@ -193,3 +193,139 @@ dotnet add package Microsoft.AspNetCore.Components.WebAssembly
 dotnet add package Microsoft.Extensions.Http
 dotnet add package Toolbelt.Blazor.HttpClientInterceptor
 ```
+
+## 十四、UI组件
+
+### 组件基础语法
+
+1. 参数属性，用于前后端传输数据。
+
+```csharp
+public partial class LifeCycle
+{
+    [Parameter]
+    public string Message { get; set; }
+}
+```
+
+2. 只读字段，用于前端展示（但不能进行修改）。
+
+```csharp
+public partial class LifeCycle
+{
+    private Guide _id = Guid.NewGuid();
+    private int _renderCount = 0;
+    private DateTime _initializedAt = DateTime.Now;
+}
+```
+
+3. 状态变更事件，用于页面重新渲染。
+
+```csharp
+private void ForceRerender()
+{
+    StateHasChanged();
+}
+```
+
+4. Razor 语法。
+
+```html
+<h3>Lifecycle demo (@_renderCount)</h3>
+
+<ul>
+    <li>Id: @_id</li>
+    <li>Message: @Message</li>
+    <li>Initialized at: @_initializedAt:HH:mm:ss</li>
+</ul>
+
+<button class="btn btn-primary" @onclick="ForceRerender">
+    Force re-render
+</button>
+```
+
+### 组件生命周期
+
+1. 第一个生命周期事件（入口点）为 `SetParameterAsync`，当 `[Parameter]` 参数传递给组件时触发。
+
+```csharp
+public override Task SetParametersAsync(ParameterView parameters)
+{
+    return base.SetParametersAsync(parameters);
+}
+```
+
+前端传递参数。
+
+```html
+<Lifecycle Message="这是一个消息。"/>
+```
+
+2. 第二个生命周期事件为 `OnInitialized` 初始化事件，用于初始化组件的字段。
+
+```csharp
+protected override void OnInitialized()
+{
+    base.OnInitialized();
+}
+```
+
+同时该事件还有一个异步版本 `OnInitializedAsync` 异步初始化事件。
+
+```csharp
+protected override Task OnInitializedAsync()
+{
+    return base.OnInitialized();
+}
+```
+
+4. 第三个生命周期事件为 `OnParametersSet` 参数变更事件，用于处理组件接收参数或参数从父组件更改时触发。
+
+```csharp
+protected override void OnParametersSet()
+{
+    Console.WriteLine($"OnParametersSet {Message}")
+}
+```
+
+5. 第四个生命周期事件为 `ShouldRender`，用于决定是否渲染该组件的事件。
+
+```csharp
+protected override bool ShouldRender()
+{
+    Console.WriteLine("ShouldRender => true");
+    return true;
+}
+```
+
+6. 第五个生命周期事件为 `OnAfterRender`，每次渲染后触发。可用于统计被渲染的次数
+
+```csharp
+protected override void OnAfterRender()
+{
+    _renderCount++;
+}
+```
+
+同时也有一个异步版本 `OnAfterRenderAsync`。
+
+```csharp
+protected override void OnAfterRenderAsync()
+{
+    _renderCount++;
+}
+```
+
+7. 第六个生命周期事件为 `Dispose`，用于清理和释放内存的。
+
+> 需要继承 `IDisposable` 并编写 `Dispose()` 方法。
+
+```csharp
+public partial class LifeCycle : IDisposable
+{
+    public void Dispose()
+    {
+    
+    }
+}
+```
